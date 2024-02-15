@@ -11,6 +11,7 @@ const App = () => {
     <>
       <BrowserRouter>
         <Routes>
+          <Route index element={<HomePage />} />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </BrowserRouter>
