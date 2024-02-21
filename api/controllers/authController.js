@@ -5,6 +5,7 @@ const bcrypt = require('bcrypt');
 
 const handleLogin = async(req, res) =>{
     const {email, password} = req.body;
+    // console.log(req.body)
     if(!email || !password){
         return res.status(400).json(error = "Please enter all the details correctly");
     }
@@ -28,27 +29,27 @@ const handleLogin = async(req, res) =>{
         const refreshToken = jwt.sign(
             {email: foundUser.email}, 
             process.env.REFRESH_TOKEN_SECRET,
-            {expiresIn: '1d'}
+            {expiresIn: '1d', algorithm: 'HS256'}
         );
 
         foundUser.refreshToken = refreshToken;
         await foundUser.save();
 
-        res.cookie('jwt', refreshToken, {maxAge: 24*60*60*1000,httpOnly: true, secure: true, sameSite: 'none'});
+        res.cookie('jwt', refreshToken, {maxAge: 24*60*60*1000, httpOnly: true,  sameSite: 'none', path: '/', secure:true}); // secure: true,
         foundUser.password = undefined;
         foundUser.refreshToken = undefined;
-        res.json({foundUser, accessToken});
+        return res.json({foundUser, accessToken});
     }
 }
 
 const handleRegister = async(req, res) =>{
-    const {name, email, password, SID, bio, branch} = req.body;
-    if(!name || !email || !password || !SID || !bio || !branch){
+    const {name, email, password, SID, branch, bio} = req.body;
+    console.log(req.body);
+    if(!name || !email || !password || !SID || !branch){
         res.status(400).json(error = "Please enter all the details correctly");
     }
 
-    const salt = await bcrypt.genSalt(12);
-    const hashedPassword = await bcrypt.hash(password, salt);
+    const hashedPassword = await bcrypt.hash(password, 12);
     const newUser = new User({
         name,
         email,

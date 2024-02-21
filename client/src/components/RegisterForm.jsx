@@ -1,13 +1,45 @@
-import React from 'react';
 import { FaGoogle, FaGithub } from "react-icons/fa6";
-import { Link, Navigate, redirect, redirectDocument, useNavigate } from 'react-router-dom';
-
+import { Link, useNavigate } from 'react-router-dom';
+import { registerUser } from '../features/auth/authQueries';
+import { useState } from "react";
+import { useQueryClient, useMutation} from "react-query";
+ 
+// Auto resize textarea
 function autoResize(el) {
     el.style.height = 'auto';
     el.style.height = el.scrollHeight + 'px';
 }
 
-const Form = (props) => {
+// Handle login and register
+
+
+const RegisterForm = () => {
+  const navigate = useNavigate();
+  const queryClient = useQueryClient();
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [SID, setSID] = useState('');
+  const [branch, setBranch] = useState('');
+  const [bio, setBio] = useState('');
+  const registerMutation = useMutation(registerUser,
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries('register');
+        navigate('/login');
+      },
+      onError: (error) => {
+        console.log(error);
+      }
+    }
+  );
+
+  const handleRegister = async (e) => {
+    e.preventDefault();
+    registerMutation.mutate({name, email, password, SID, branch, bio}); 
+
+  };
+  
     return (
         <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 ">
           <div className="absolute bg-gradient-to-r from-green-400 via-teal-400 to-blue-400 shadow-md rounded-xl pt-6 pb-8 flex h-auto w-8/12">
@@ -23,50 +55,19 @@ const Form = (props) => {
          
         {/*Form Container*/}
         <div className='flex-col w-7/12'>
-        <h1 className="text-start text-3xl font-bold mb-4">{props.type==='login' ? 'Login' : 'Register'}                                                                   </h1>
+            <h1 className="text-start text-3xl font-bold mb-4">Register                                                                   </h1>
             <p className="text-start text-gray-700 text-s mb-4">
-                Welcome back! Sign in to your account
-            </p>
-        {props.type==='login' && ( <form action=''>
-              <div className="mb-4 text-l mt-8 text-start">
-                <input
-                  className="shadow appearance-none border rounded-3xl w-full ps-3 py-2 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                  id="email"
-                  type="text"
-                  placeholder="Email"
-                />
-              </div>
-              <div className="mb-4 mt-4 text-l">
-                <input
-                  className="shadow appearance-none border rounded-3xl w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
-                  id="password"
-                  type="password"
-                  placeholder="Password"
-                />
-                <a>
-                    <p className="text-right text-sm text-teal-700 hover:text-blue-800">
-                        Forgot Password?
-                    </p>
-                </a>
-              </div>
-              
-              <div className="flex justify-center">
-                <button
-                  className="bg-blue-500 hover:bg-green-700 text-white py-2 px-3 rounded-3xl w-full focus:outline-none hover:scale-105 duration-300  focus:shadow-outline"
-                  type="button"
-                >
-                  Login
-                </button>
-              </div>
-            </form>)
-            }        
-            {props.type==='register' && ( <form action=''>
+                Welcome! Sign up to create an account
+            </p>     
+            <form action='' onSubmit={handleRegister}>
                 <div className="mb-4 text-l mt-8 text-start">
                     <input
                     className="shadow appearance-none border rounded-3xl w-full ps-3 py-2 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                     id="name"
                     type="text"
                     placeholder="Name"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
                     />
                 </div>
                 <div className="mb-4 text-l mt-4 text-start">
@@ -75,6 +76,8 @@ const Form = (props) => {
                     id="email"
                     type="text"
                     placeholder="Email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
                     />
                 </div>
                 <div className="mb-1 mt-4 text-l">
@@ -83,6 +86,8 @@ const Form = (props) => {
                     id="password"
                     type="password"
                     placeholder="Password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
                     />
                 </div>
                 <div className="mb-4  text-l text-start">
@@ -91,6 +96,8 @@ const Form = (props) => {
                     id="sid"
                     type="text"
                     placeholder="SID"
+                    value={SID}
+                    onChange={(e) => setSID(e.target.value)}
                     />
                 </div>
                 <div className="mb-4 text-l mt-4 text-start">
@@ -99,6 +106,8 @@ const Form = (props) => {
                     id="branch"
                     type="text"
                     placeholder="Branch"
+                    value={branch}
+                    onChange={(e) => setBranch(e.target.value)}
                     />
                 </div>
                 <div className="mb-4 text-l mt-4 text-start">
@@ -107,14 +116,20 @@ const Form = (props) => {
                     id="bio"
                     type="text"
                     placeholder="A liitle about yourself..."
+                    value={bio}
+                    onChange={(e) => setBio(e.target.value)}
                     />
+                    
+                    {registerMutation.isError && (<p className="text-sm text-red-700"> 
+                    Registration failed! {registerMutation.error.message==='Request failed with status code 409' ? 'User already exists' : 'Please enter all the details correctly'}
+                    </p>)}
                 </div>
                 <button className="bg-blue-500 hover:bg-green-700 text-white py-2 px-3 rounded-3xl w-full focus:outline-none focus:shadow-outline hover:scale-105 duration-300"
-                type="button"
+                type="submit"
                 >
-                Register
+                {registerMutation.isLoading ? 'Registering...' : 'Register'}
                 </button>
-            </form>)}
+            </form>
             {/*Social Media Login*/}
             <div className="flex items-center mt-4 mb-4">
               <div className="w-full border-t border-blue-700"></div>
@@ -149,13 +164,13 @@ const Form = (props) => {
                 {/*Image*/}
                 <div className="flex justify-center mt-6">
                     <h3 className="text-gray-700 text-md my-6 ">
-                        {props.type==='login' ? 'New to our platform?' : 'Welcome back!'}
+                        Already have an account?
                     </h3>
                 </div>
                 <div className="flex justify-center">
-                    <Link to={props.type==='login' ? '/register' : '/login'} className= 'flex justify-center bg-blue-500 hover:bg-green-700 text-white py-2 px-3 rounded-3xl w-8/12 focus:outline-none focus:shadow-outline hover:scale-105 duration-300'>
+                    <Link to='/login' className= 'flex justify-center bg-blue-500 hover:bg-green-700 text-white py-2 px-3 rounded-3xl w-8/12 focus:outline-none focus:shadow-outline hover:scale-105 duration-300'>
                    <button >
-                        {props.type==='login' ? 'Register' : 'Login'}
+                       Login
                     </button>
                     </Link>
                 </div>
@@ -166,10 +181,4 @@ const Form = (props) => {
       );
 };
 
-import PropTypes from 'prop-types';
-
-Form.propTypes = {
-    type: PropTypes.string.isRequired
-};
-
-export default Form
+export default RegisterForm
