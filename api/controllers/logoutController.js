@@ -5,7 +5,6 @@ const handleLogout = async (req, res) => {
     
     const cookie = req.cookies;
     const refreshToken = cookie.jwt;
-    console.log({...cookie});
     if(!cookie?.jwt){
         return res.status(401).json({error: "Unauthorized"});
     }
