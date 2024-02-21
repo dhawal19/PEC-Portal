@@ -2,6 +2,7 @@ import React from 'react';
 import UserProfile from "../components/UserProfile"
 import { useSelector } from 'react-redux';
 import { selectUser } from '../features/auth/authSlice';
+import HomeCard from '../components/HomeCard';
 export default function HomePage() {
     // const user = {
     //     picture: 'path/to/profile-picture.jpg',

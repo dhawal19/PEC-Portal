@@ -44,7 +44,6 @@ const handleLogin = async(req, res) =>{
 
 const handleRegister = async(req, res) =>{
     const {name, email, password, SID, branch, bio} = req.body;
-    console.log(req.body);
     if(!name || !email || !password || !SID || !branch){
         res.status(400).json(error = "Please enter all the details correctly");
     }

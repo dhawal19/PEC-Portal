@@ -2,11 +2,10 @@ import { FaGoogle, FaGithub } from "react-icons/fa6";
 import { Link, useNavigate } from 'react-router-dom';
 import { loginUser } from '../features/auth/authQueries';
 import { useDispatch } from 'react-redux'
-import { setUser, setToken, selectUser } from '../features/auth/authSlice';
-import { useState } from 'react'; 
-import { useQueryClient, useMutation} from "react-query";
-import { useSelector } from 'react-redux';
-
+import { setUser, setToken } from '../features/auth/authSlice';
+import { useEffect, useState } from 'react'; 
+import {  useMutation} from "react-query";
+ 
 
 // Handle login and register
 
@@ -16,6 +15,7 @@ const LoginForm = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [closeButtonClicked, setCloseButtonClicked] = useState(false);
   // const queryClient = useQueryClient();
 
   const loginMutation = useMutation(loginUser,
@@ -38,15 +38,20 @@ const LoginForm = () => {
     loginMutation.mutate({ email, password });
   };
 
-    return (
+  const handleCloseButton = () => {
+    setCloseButtonClicked(true);
+  };
+  useEffect(() => {
+    setCloseButtonClicked(false);
+  }, [closeButtonClicked]);
+
+    return ( closeButtonClicked ? null :(
       <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 ">
         <div className="absolute bg-gradient-to-r from-green-400 via-teal-400 to-blue-400 shadow-md rounded-xl pt-6 pb-8 flex h-auto w-8/12">
         
         {/*Close button*/}
-        <button
-        className="absolute top-0 right-0 my-2 pb-3 mr-2 bg-transparent border-0 rounded-full h-8 w-8 text-gray-600 hover:text-gray-800 text-xl hover:bg-gray-300 cursor-pointer focus:outline-none focus:shadow-outline"
-        onClick={() => console.log('Close button clicked')}
-      > {/* Add onClick event to close the form */}
+        <button onClick={() => handleCloseButton()}
+        className="absolute top-0 right-0 my-2 pb-3 mr-2 bg-transparent border-0 rounded-full h-8 w-8 text-gray-600 hover:text-gray-800 text-xl hover:bg-gray-300 cursor-pointer focus:outline-none focus:shadow-outline"> {/* Add onClick event to close the form */}
         &times;
       </button>
         <div className="flex flex-start justify-center w-6/12">
@@ -140,7 +145,7 @@ const LoginForm = () => {
                 </div>
             </div>
     </div>
-  </div>
+  </div>)
 )};
 
 
