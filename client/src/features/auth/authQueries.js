@@ -1,4 +1,5 @@
 import axios from 'axios';
+import {useGoogleLogin} from '@react-oauth/google';
 
 
 export const loginUser = async ({ email, password }) => {
@@ -52,3 +53,20 @@ export const registerUser = async ({name, email, password, SID, branch, bio}) =>
     }
 }
 
+export const  useGoogleLoginHook = () => {
+    const {signIn} = useGoogleLogin({
+        clientId: '832780997758-1o4mfj4lt1biihtbqpbbpj9a9kgh652q.apps.googleusercontent.com',
+        scope: 'profile email',
+        onSuccess: (res) => {
+            console.log('Login Success: currentUser:', res.profileObj);
+        },
+        onFailure: (res) => {
+            console.log('Login failed: res:', res);
+        },
+        onRequest: () => {
+            console.log('Login Requested');
+        },
+        // offlineAccess: true,
+    });
+    return {signIn};
+}
