@@ -21,12 +21,17 @@ const userSchema = new mongoose.Schema({
         ref: 'User'
     }],
     SID: {
-        type: Number,
+        type: String,
         required: true,
+        default: 0,
     },
     branch: {
         type: String,
         required: true,
+        default: "CSE",
+    },
+    refreshToken: {
+        type: String,
     },
     societies: [{
         type: String
