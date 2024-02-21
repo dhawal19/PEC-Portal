@@ -1,20 +1,27 @@
 import { useNavigate } from "react-router-dom";
-const LandingPage = () => {
-    const navigate = useNavigate();
+import React, { useState } from 'react';
+import LoginForm from '../components/LoginForm';
 
+const LandingPage = () => {
+    const [showLoginForm, setShowLoginForm] = useState(false);
+
+    const handleGetStartedClick = () => {
+        setShowLoginForm(true);
+    };
+    const navigate = useNavigate();
     return (
-        <div className="h-screen flex justify-center items-center bg-cover bg-center bg-fixed" style={{ backgroundImage: "url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcStifZ4u_onTaV-vkFCdvIojDCOyCVcATACPpG1xmtZ-H0tdGQBdzzzVZkraw&s)" }}>
-            <div className="bg-white bg-opacity-50 p-8 rounded-lg text-center">
-                <h1 className="text-4xl font-bold mb-4 text-center" >Welcome to Our Website</h1>
-                <div className="bg-white bg-opacity-50 p-8 rounded-lg text-center">
-                    <p className="text-lg mb-8">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut aliquam accumsan nulla at posuere.</p>
-                    <button onClick={()=>{navigate('/login')}} className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded">
-                        Get Started
-                    </button>
-                </div>
-            </div>
+        <div className="bg-black min-h-screen flex flex-col items-center justify-center text-white">
+            <h1 className="text-6xl font-bold mb-8">Welcome to PEC-Connect</h1>
+            <p className="text-xl text-center mb-8 font-semibold mt-4">
+                This is a portal for college students to connect with their fellow classmates and to get information about courses. Click on the get started button to continue.
+            </p>
+            <button onClick={handleGetStartedClick} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-4 px-8 rounded-lg">
+                Get Started
+            </button>
+            {showLoginForm && <LoginForm />}
         </div>
     );
+
 };
 
 export default LandingPage;
