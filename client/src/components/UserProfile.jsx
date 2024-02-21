@@ -35,7 +35,7 @@ const UserProfile = ({ user }) => {
 
 
     return (
-        <div className="bg-gray-800 p-4 w-1/5 h-full fixed top-0 left-0 overflow-y-auto">
+        <div className="bg-black p-4 w-1/5 h-full fixed top-0 left-0 overflow-y-auto">
             <div className="flex items-center justify-center mb-4">
                 <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTazqf7Ow72BkH5xm0t8vfXx-OPgNBYqjYYKQ&usqp=CAU" alt="Profile" className="w-20 h-20" />
             </div>
