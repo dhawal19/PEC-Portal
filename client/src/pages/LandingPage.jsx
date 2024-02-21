@@ -1,14 +1,16 @@
-import { useNavigate } from "react-router-dom";
-import React, { useState } from 'react';
+import { useState } from 'react';
 import LoginForm from '../components/LoginForm';
+import { useSelector} from 'react-redux';
+import { selectType } from "../features/auth/loginFormSlice";
+import RegisterForm from "../components/RegisterForm";
 
 const LandingPage = () => {
     const [showLoginForm, setShowLoginForm] = useState(false);
-
+    const formType = useSelector(state => state.loginForm.type);
     const handleGetStartedClick = () => {
         setShowLoginForm(true);
-    };
-    const navigate = useNavigate();
+        console.log(formType);
+    }
     return (
         <div className="bg-black min-h-screen flex flex-col items-center justify-center text-white">
             <h1 className="text-6xl font-bold mb-8">Welcome to PEC-Connect</h1>
@@ -18,7 +20,8 @@ const LandingPage = () => {
             <button onClick={handleGetStartedClick} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-4 px-8 rounded-lg">
                 Get Started
             </button>
-            {showLoginForm && <LoginForm />}
+            {showLoginForm && formType === "login" && <LoginForm />}
+            {showLoginForm && formType === "register" && <RegisterForm />}
         </div>
     );
 

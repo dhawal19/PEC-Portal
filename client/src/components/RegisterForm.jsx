@@ -3,7 +3,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import { registerUser } from '../features/auth/authQueries';
 import { useState } from "react";
 import { useQueryClient, useMutation} from "react-query";
- 
+import { setType } from "../features/auth/loginFormSlice";
+import { useDispatch } from 'react-redux';
 // Auto resize textarea
 function autoResize(el) {
     el.style.height = 'auto';
@@ -22,6 +23,7 @@ const RegisterForm = () => {
   const [SID, setSID] = useState('');
   const [branch, setBranch] = useState('');
   const [bio, setBio] = useState('');
+  const dispatch = useDispatch();
   const registerMutation = useMutation(registerUser,
     {
       onSuccess: () => {
@@ -168,11 +170,10 @@ const RegisterForm = () => {
                     </h3>
                 </div>
                 <div className="flex justify-center">
-                    <Link to='/login' className= 'flex justify-center bg-blue-500 hover:bg-green-700 text-white py-2 px-3 rounded-3xl w-8/12 focus:outline-none focus:shadow-outline hover:scale-105 duration-300'>
-                   <button >
-                       Login
+                   <button onClick={() => dispatch(setType('login'))}
+                   className= 'flex justify-center bg-blue-500 hover:bg-green-700 text-white py-2 px-3 rounded-3xl w-8/12 focus:outline-none focus:shadow-outline hover:scale-105 duration-300'>
+                      Login
                     </button>
-                    </Link>
                 </div>
             </div>
           </div>

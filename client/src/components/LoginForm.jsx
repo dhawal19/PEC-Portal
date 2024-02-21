@@ -1,11 +1,11 @@
 import { FaGoogle, FaGithub } from "react-icons/fa6";
-import { Link, useNavigate } from 'react-router-dom';
+import {  useNavigate } from 'react-router-dom';
 import { loginUser } from '../features/auth/authQueries';
 import { useDispatch } from 'react-redux'
-import { setUser, setToken, selectUser } from '../features/auth/authSlice';
+import { setUser, setToken } from '../features/auth/authSlice';
 import { useState } from 'react';
-import { useQueryClient, useMutation } from "react-query";
-import { useSelector } from 'react-redux';
+import { useMutation } from "react-query";
+import { setType } from "../features/auth/loginFormSlice";
 
 
 // Handle login and register
@@ -16,7 +16,7 @@ const LoginForm = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [closeButtonClicked, setCloseButtonClicked] = useState(false);
+  // const [closeButtonClicked, setCloseButtonClicked] = useState(false);
   // const queryClient = useQueryClient();
 
   const loginMutation = useMutation(loginUser,
@@ -133,11 +133,10 @@ const LoginForm = () => {
             <h3 className="text-white text-md my-6 "> New to our website?</h3>
           </div>
           <div className="flex justify-center">
-            <Link to='/register' className='flex justify-center bg-blue-500 hover:bg-green-700 text-white py-2 px-3 rounded-3xl w-8/12 focus:outline-none focus:shadow-outline hover:scale-105 duration-300'>
-              <button >
+              <button onClick={() => dispatch(setType('register'))}
+              className='flex justify-center bg-blue-500 hover:bg-green-700 text-white py-2 px-3 rounded-3xl w-8/12 focus:outline-none focus:shadow-outline hover:scale-105 duration-300'>
                 Register
               </button>
-            </Link>
           </div>
         </div>
       </div>

@@ -19,8 +19,6 @@ const App = () => {
         <Routes>
           <Route path='/' element={<LandingPage />} />
           <Route path='/home' element={token ? <HomePage /> : <LoginForm />} />
-          {/* <Route path='/login' element={<LoginForm />} />
-          <Route path='/register' element={<RegisterForm />} /> */}
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </BrowserRouter>
