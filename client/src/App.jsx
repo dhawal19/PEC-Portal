@@ -8,17 +8,19 @@ import RegisterForm from './components/RegisterForm';
 import LandingPage from './pages/LandingPage';
 import { useSelector } from 'react-redux';
 import { selectToken } from './features/auth/authSlice';
+import { useVerify } from './hooks/useVerify';
 
 // Define your routes
 const App = () => {
-  const token = useSelector(selectToken);
+  // const token = useSelector(selectToken);
+  const verify = useVerify();
 
   return (
     <>
       <BrowserRouter>
         <Routes>
           <Route path='/' element={<LandingPage />} />
-          <Route path='/home' element={token ? <HomePage /> : <LoginForm />} />
+          <Route path='/home' element={verify ? <HomePage /> : <LoginForm />} />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </BrowserRouter>

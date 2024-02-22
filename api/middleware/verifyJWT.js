@@ -8,6 +8,7 @@ const verifyJWT = (req, res, next) =>{
     }
 
     const token = authHeader.split(' ')[1];
+    if(!token || token === undefined) res.status(403);
     jwt.verify(
         token,
         process.env.ACCESS_TOKEN_SECRET,

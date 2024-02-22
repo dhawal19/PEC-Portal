@@ -54,7 +54,7 @@ const LoginForm = () => {
 
           {/*Form Container*/}
           <div className='flex-col w-7/12'>
-            <h1 className="text-start text-3xl font-bold mb-4">Login</h1>
+            <h1 className="text-start text-3xl font-bold mb-4 text-white">Login</h1>
             <p className="text-start text-white text-s mb-4">
               Welcome back! Sign in to your account
             </p>

@@ -1,17 +1,17 @@
 import { useState } from 'react';
 import LoginForm from '../components/LoginForm';
 import { useSelector} from 'react-redux';
-import { selectType } from "../features/auth/loginFormSlice";
 import RegisterForm from "../components/RegisterForm";
+import { selectToken } from '../features/auth/authSlice';
+import { useNavigate } from 'react-router-dom';
 
 const LandingPage = () => {
     const [showLoginForm, setShowLoginForm] = useState(false);
     const formType = useSelector(state => state.loginForm.type);
     const handleGetStartedClick = () => {
         setShowLoginForm(true);
-        console.log(formType);
     }
-    return (
+    return (  
         <div className="bg-black min-h-screen flex flex-col items-center justify-center text-white">
             <h1 className="text-6xl font-bold mb-8">Welcome to PEC-Connect</h1>
             <p className="text-xl text-center mb-8 font-semibold mt-4">

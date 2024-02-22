@@ -7,7 +7,6 @@ const credentials = require('./middleware/credentials');
 const corsOptions = require('./config/corsOptions');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser'); // add cookie parser
-
 // cors
 app.use(credentials); // add credentials middleware
 
@@ -27,6 +26,8 @@ app.use('/register', require('./routes/auth/register'));
 app.use('/login', require('./routes/auth/login'));
 app.use('/refresh', require('./routes/auth/refresh'));
 app.use('/logout', require('./routes/auth/logout'));
+
+app.use('/verify', require('./routes/auth/verify'));
 
 
 app.listen(PORT, () => {

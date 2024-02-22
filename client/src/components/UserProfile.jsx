@@ -8,30 +8,31 @@ const UserProfile = ({ user }) => {
     const [isLoading, setIsLoading] = useState(false);
     const dispatch = useDispatch();
     const naviagate = useNavigate();
-    const handleLogout = async () => {
-        try {
-            setIsLoading(true);
-            const response = await axios.post('http://localhost:3000/logout', {}, {
-                withCredentials: true,
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Access-Control-Allow-Origin': '*',
-                },
-            }
-            );
-            setIsLoading(false);
-            if (response.status !== 200) {
-                const errorMessage = `An error has occured: ${response.status}`;
-                throw new Error(errorMessage || 'Failed to logout');
-            }
-            dispatch(setUser(null));
-            dispatch(setToken(null));
-            naviagate('/');
+
+const handleLogout = async () => {
+    try {
+        setIsLoading(true);
+        const response = await axios.post('http://localhost:3000/logout', {}, {
+            withCredentials: true,
+            headers: {
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': '*',
+            },
         }
-        catch (error) {
-            throw new Error('Failed to logout: ' + error.message);
+        );
+        setIsLoading(false);
+        if (response.status !== 200) {
+            const errorMessage = `An error has occured: ${response.status}`;
+            throw new Error(errorMessage || 'Failed to logout');
         }
+        dispatch(setUser({}));
+        naviagate('/');                     
     }
+    catch (error) {
+        throw new Error('Failed to logout: ' + error.message);
+    }
+}
+   
 
 
     return (
@@ -60,6 +61,7 @@ const UserProfile = ({ user }) => {
                 <button
                     className="bg-blue-500 hover:bg-green-700 text-white py-2 px-3 rounded-3xl w-full focus:outline-none hover:scale-105 duration-300  focus:shadow-outline"
                     type="submit"
+                    id="logout-button"
                     onClick={() => handleLogout()}
                 >
                     {isLoading ? 'Logging out...' : 'Logout'}
