@@ -1,9 +1,9 @@
 const express = require('express');
 const router = express.Router();
-const handleAdd = require('../../controllers/addCourseController.js');
-const protectRoute = require('../../middleware/protectRoute');
+const handleAdd = require('../../controllers/addCourseController');
+const verifyJWT = require('../../middleware/verifyJWT');
 
 
-router.post('/attendance', protectRoute, handleAdd);
+router.post('/', verifyJWT, handleAdd);
 
 module.exports = router;
