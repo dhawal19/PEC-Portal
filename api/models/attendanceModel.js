@@ -9,6 +9,10 @@ const attendanceSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    courseCode: {
+        type: String,
+        required: true
+    },
     percentage: {
         present: {
             type: Number,
@@ -21,5 +25,5 @@ const attendanceSchema = new mongoose.Schema({
     }
 }, { timestamps: true });
 
-const Attendance =  new mongoose.model("attendance", attendanceSchema);
+const Attendance = new mongoose.model("attendance", attendanceSchema);
 module.exports = Attendance;

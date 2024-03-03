@@ -28,6 +28,10 @@ app.use('/refresh', require('./routes/auth/refresh'));
 app.use('/logout', require('./routes/auth/logout'));
 
 app.use('/verify', require('./routes/auth/verify'));
+app.use("/addCourse", require('./routes/attendanceRoute/addCourse'));
+// PROTECTED ROUTES
+
+
 
 
 app.listen(PORT, () => {
