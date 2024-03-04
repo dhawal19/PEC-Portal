@@ -29,4 +29,4 @@ const addCourse = async (req, res) => {
     }
 }
 
-module.exports = { addCourse };
+module.exports =  addCourse ;
