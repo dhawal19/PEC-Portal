@@ -2,8 +2,6 @@ import { useState } from 'react';
 import LoginForm from '../components/LoginForm';
 import { useSelector } from 'react-redux';
 import RegisterForm from "../components/RegisterForm";
-import { selectToken } from '../features/auth/authSlice';
-import { useNavigate } from 'react-router-dom';
 
 const LandingPage = () => {
     const [showLoginForm, setShowLoginForm] = useState(false);

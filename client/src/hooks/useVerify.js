@@ -14,9 +14,7 @@ export const useVerify = () => {
                     headers: {
                         'authorization': `Bearer ${token}`
                     },
-                }
-                )
-
+                })
                 if(res.status === 200)
                     setVerify(true);
 

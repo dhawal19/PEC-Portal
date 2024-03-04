@@ -1,9 +1,7 @@
 import UserProfile from "../components/UserProfile"
 import { useSelector } from 'react-redux';
-import { selectToken, selectUser } from '../features/auth/authSlice';
-import { useVerify } from "../hooks/useVerify";
-import { Link } from 'react-router-dom';
-import React, { useState } from 'react';
+import { selectUser } from '../features/auth/authSlice';
+import  { useState } from 'react';
 import AttendanceCard from '../components/AttendanceCard';
 
 export default function AttendancePage({ courses }) {

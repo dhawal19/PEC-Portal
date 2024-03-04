@@ -1,14 +1,9 @@
-import { BrowserRouter as Router, Route, BrowserRouter, Routes } from 'react-router-dom';
-import React from 'react';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 // Import your components
 import HomePage from './pages/HomePage';
 import NotFoundPage from './pages/NotFoundPage';
-import Attendance from './pages/AttendancePage';
 import LoginForm from './components/LoginForm';
-import RegisterForm from './components/RegisterForm';
 import LandingPage from './pages/LandingPage';
-import { useSelector } from 'react-redux';
-import { selectToken } from './features/auth/authSlice';
 import { useVerify } from './hooks/useVerify';
 import AttendancePage from './pages/AttendancePage';
 

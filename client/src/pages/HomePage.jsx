@@ -1,6 +1,6 @@
 import UserProfile from "../components/UserProfile"
 import { useSelector } from 'react-redux';
-import { selectToken, selectUser } from '../features/auth/authSlice';
+import { selectUser } from '../features/auth/authSlice';
 import HomeCard from '../components/HomeCard';
 import { useVerify } from "../hooks/useVerify";
 import { Link } from 'react-router-dom';
