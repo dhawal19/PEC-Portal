@@ -1,5 +1,5 @@
 import { FaGoogle, FaGithub } from "react-icons/fa6";
-import {  useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { loginUser } from '../features/auth/authQueries';
 import { useDispatch } from 'react-redux'
 import { setUser, setToken } from '../features/auth/authSlice';
@@ -54,8 +54,8 @@ const LoginForm = () => {
 
           {/*Form Container*/}
           <div className='flex-col w-7/12'>
-            <h1 className="text-start text-3xl font-bold mb-4 text-white">Login</h1>
-            <p className="text-start text-white text-s mb-4">
+            <h1 className="text-center text-3xl font-bold mb-4 text-white">Login</h1>
+            <p className="text-center text-white text-s mb-4">
               Welcome back! Sign in to your account
             </p>
             <form action='' onSubmit={handleLogin}>
@@ -127,16 +127,16 @@ const LoginForm = () => {
         {/*Vertical line*/}
         <div className=' border-2 border-white border-opacity-30 w-0.5 rotate-180'></div>
         {/*Image Container*/}
-        <div className='flex flex-col w-5/12'>
+        <div className='flex flex-col w-5/12 ml-6'>
           {/*Image*/}
           <div className="flex justify-center mt-6">
             <h3 className="text-white text-md my-6 "> New to our website?</h3>
           </div>
           <div className="flex justify-center">
-              <button onClick={() => dispatch(setType('register'))}
+            <button onClick={() => dispatch(setType('register'))}
               className='flex justify-center bg-blue-500 hover:bg-green-700 text-white py-2 px-3 rounded-3xl w-8/12 focus:outline-none focus:shadow-outline hover:scale-105 duration-300'>
-                Register
-              </button>
+              Register
+            </button>
           </div>
         </div>
       </div>

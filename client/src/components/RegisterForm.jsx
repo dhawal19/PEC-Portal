@@ -58,8 +58,8 @@ const RegisterForm = () => {
 
           {/*Form Container*/}
           <div className='flex-col w-7/12'>
-            <h1 className="text-start text-3xl font-bold mb-4">Register                                                                   </h1>
-            <p className="text-start text-white text-s mb-4">
+            <h1 className="text-3xl font-bold mb-4 text-center">Register                                                                   </h1>
+            <p className="text-center text-white text-s mb-4">
               Welcome! Sign up to create an account
             </p>
             <form action='' onSubmit={handleRegister}>
@@ -163,10 +163,10 @@ const RegisterForm = () => {
         {/*Vertical line*/}
         <div className=' border-2 border-white border-opacity-30 w-0.5 rotate-180'></div>
         {/*Image Container*/}
-        <div className='flex flex-col w-5/12'>
+        <div className='flex flex-col w-5/12 ml-6'>
           {/*Image*/}
           <div className="flex justify-center mt-6">
-            <h3 className="text-white text-md my-6 ">
+            <h3 className="text-white text-md my-6 text-center">
               Already have an account?
             </h3>
           </div>
