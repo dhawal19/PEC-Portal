@@ -26,12 +26,9 @@ app.use('/register', require('./routes/auth/register'));
 app.use('/login', require('./routes/auth/login'));
 app.use('/refresh', require('./routes/auth/refresh'));
 app.use('/logout', require('./routes/auth/logout'));
-
 app.use('/verify', require('./routes/auth/verify'));
 app.use("/addCourse", require('./routes/attendanceRoute/addCourse'));
-// PROTECTED ROUTES
-
-
+app.use("/messages", require('./routes/messageRoute/messages'));
 
 
 app.listen(PORT, () => {
