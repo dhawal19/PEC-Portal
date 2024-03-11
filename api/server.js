@@ -28,7 +28,12 @@ app.use('/refresh', require('./routes/auth/refresh'));
 app.use('/logout', require('./routes/auth/logout'));
 app.use('/verify', require('./routes/auth/verify'));
 app.use("/addCourse", require('./routes/attendanceRoute/addCourse'));
-app.use("/messages", require('./routes/messageRoute/messages'));
+app.use("/messages/:id", require('./routes/messageRoute/messages'));
+
+
+app.get('/*', (req, res) => {
+    res.sendFile(__dirname + '/public/404.html');
+})
 
 
 app.listen(PORT, () => {
