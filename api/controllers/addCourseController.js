@@ -1,17 +1,21 @@
 // const User = require('../models/userModel');
 const Attendance = require('../models/attendanceModel');
+const User = require('../models/userModel');
 
 const addCourse = async (req, res) => {
     try {
         const { courseName, courseCode, present, total } = req.body;
-        const user = req.user._id;
-
-        let course = await Attendance.findOne({ user, courseCode });
+        // console.log(courseName);
+        const userEmail = req.email;
+        // console.log(userEmail);
+        const user = await User.findOne({ email: userEmail });
+        const course = await Attendance.findOne({ courseCode });
+        // console.log("hi");
         if (course) {
             return res.status(400).json({ message: 'Course already exists' });
         }
         // else create a new course
-        course = new Attendance({
+        const newCourse = new Attendance({
             user,
             courseName,
             courseCode,
@@ -20,7 +24,7 @@ const addCourse = async (req, res) => {
                 total
             }
         })
-        await course.save();
+        await newCourse.save();
         res.status(200).json({ message: 'Course added successfully' });
     }
     catch (error) {
@@ -29,4 +33,4 @@ const addCourse = async (req, res) => {
     }
 }
 
-module.exports =  addCourse ;
+module.exports = addCourse;

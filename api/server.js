@@ -30,6 +30,7 @@ app.use('/verify', require('./routes/auth/verify'));
 app.use("/addCourse", require('./routes/attendanceRoute/addCourse'));
 app.use("/messages/:id", require('./routes/messageRoute/messages'));
 app.use("/feedback", require('./routes/descriptionRoute/description'));
+app.use("/deleteAccount", require('./routes/user/deleteAccount'));
 
 
 
