@@ -1,20 +1,30 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Navbar from '../components/Navbar';
 import Sidebar from '../components/Sidebar';
 import Chat from '../components/Chat';
 
 const MessagePage = () => {
-    const [selectedUserId, setSelectedUserId] = useState(null); // State to track the selected user ID
-
+    const [selectedUser, setSelectedUser] = useState(null); // State to track the selected user ID
+     // Variable to store the selected user object
     const users = [
-        { id: 1, name: 'User 1' },
-        { id: 2, name: 'User 2' },
-        { id: 3, name: 'User 3' },
-        // Add more users as needed
-    ];
+        {
+            _id: "65d7356ff8ff0749cf963602",
+            name: "abc"
+        },
+        {
+            _id: "660e7ac6094c0ab5e10e5ec4",
+            name: "Chirag Garg"
+        },
+        {
+            _id: "65d39690603e9fa6832b104b",
+            name: "Dhawal Arora"
+        }
+    ]
 
-    const handleUserClick = (userId) => {
-        setSelectedUserId(userId); // Update the selected user ID when a user is clicked
+    const handleUserClick = (user) => {
+     // Find the selected user object
+        // console.log(user);
+        setSelectedUser(user);
     };
 
     return (
@@ -29,7 +39,7 @@ const MessagePage = () => {
                 </div>
                 {/* Chat on the right */}
                 <div className="w-4/5 flex flex-col">
-                    <Chat selectedUserId={selectedUserId} />
+                    <Chat selectedUser={selectedUser} />
                 </div>
             </div>
         </div>

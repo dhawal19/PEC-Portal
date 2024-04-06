@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
-
-const Sidebar = ({ users, onUserClick }) => {
+import PropTypes from 'prop-types';
+import { useState } from 'react';
+const Sidebar = ({users, onUserClick}) => {
+   
     const [searchTerm, setSearchTerm] = useState('');
 
     // Filter users based on search term
@@ -22,7 +23,7 @@ const Sidebar = ({ users, onUserClick }) => {
                 {filteredUsers.map((user, index) => (
                     <div
                         key={index}
-                        onClick={() => onUserClick(user.id)}
+                        onClick={() => onUserClick(user)}
                         className="cursor-pointer p-2 mb-2 bg-white rounded-md shadow-md hover:bg-gray-100 transition duration-300"
                     >
                         {user.name}

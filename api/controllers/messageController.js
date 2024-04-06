@@ -1,15 +1,12 @@
 const Conversation = require('../models/conversationModel');
 const Message = require('../models/messageModel');
 
-const sendMessage = async (req, res) => {
+const storeMessage = async (messageData) => {
     // req.params.id bcz in message route we take id
     // console.log("message sent", req.params.id);
     try {
-        const { message } = req.body;
-        const { id: receiverId } = req.params;
+        const { senderId, receiverId, message } = messageData;
         // bcz we have added user id in our request in middleware(protected route)
-        const senderId = req.user._id;
-
         let conversation = await Conversation.findOne({
             participants: { $all: [senderId, receiverId] }
         });
@@ -34,10 +31,8 @@ const sendMessage = async (req, res) => {
 
         // The above two lines can be replaced with this as this will run in parallel;
         await Promise.all([conversation.save(), newMessage.save()]);
-        res.status(201).json({ newMessage });
     } catch (error) {
         console.log("Error in sendMessage controller", error.message);
-        res.status(500).json({ error: "Internal server error" });
     }
 };
 
@@ -61,6 +56,5 @@ const getMessage = async (req, res) => {
 }
 
 module.exports = {
-    getMessage: getMessage,
-    sendMessage: sendMessage
+   getMessage,storeMessage
 };
