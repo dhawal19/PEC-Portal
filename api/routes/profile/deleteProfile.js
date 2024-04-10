@@ -1,9 +1,9 @@
 const express = require('express');
 const router = express.Router();
-const { addCourse } = require('../../controllers/attendanceController');
+const { deleteProfile } = require('../../controllers/profileController');
 const verifyJWT = require('../../middleware/verifyJWT');
 
 
-router.post('/', verifyJWT, addCourse);
+router.delete('/', verifyJWT, deleteProfile);
 
 module.exports = router;

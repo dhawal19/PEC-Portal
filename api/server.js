@@ -2,15 +2,17 @@ const express = require('express');
 const connectDB = require('./config/connectDB');
 const app = express();
 
-const {createServer} = require('http');
-const {Server} = require('socket.io');
+const { createServer } = require('http');
+const { Server } = require('socket.io');
 const server = createServer(app);
 
-const io = new Server(server, {cors: {
-    origin: "http://localhost:5173",
-    allowedHeaders: ["Access-Control-Allow-Origin", "Access-Control-Allow-Methods", "Access-Control-Allow-Headers", "Authorization"],
-    credentials: true
-  }});
+const io = new Server(server, {
+    cors: {
+        origin: "http://localhost:5173",
+        allowedHeaders: ["Access-Control-Allow-Origin", "Access-Control-Allow-Methods", "Access-Control-Allow-Headers", "Authorization"],
+        credentials: true
+    }
+});
 
 const PORT = process.env.PORT || 3000;
 const cors = require('cors');
@@ -43,9 +45,17 @@ app.use('/login', require('./routes/auth/login'));
 app.use('/refresh', require('./routes/auth/refresh'));
 app.use('/logout', require('./routes/auth/logout'));
 app.use('/verify', require('./routes/auth/verify'));
-app.use("/addCourse", require('./routes/attendanceRoute/addCourse'));
+// User profile routes
+app.use('/delete', require('./routes/profile/deleteProfile'))
+// Attendance routes
+app.use("/attendance/addCourse", require('./routes/attendanceRoute/addCourse'));
+app.use("/attendance/getUserAttendance", require('./routes/attendanceRoute/getUserAttendance'));
+app.use("/attendance/editAttendance", require('./routes/attendanceRoute/editAttendance'));
 // app.use("/messages/:id", require('./routes/messageRoute/messages'));
-app.use("/feedback", require('./routes/descriptionRoute/description'));
+// User feedback routes
+app.use("/feedback", require('./routes/feedback/addCourse'));
+app.use("/feedback", require('./routes/feedback/updateExperience'));
+app.use("/feedback", require('./routes/feedback/getFeedback'));
 
 
 app.get('/*', (req, res) => {
