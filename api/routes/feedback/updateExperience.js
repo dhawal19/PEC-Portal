@@ -1,9 +1,9 @@
 const express = require('express');
 const router = express.Router();
-const { addCourse } = require('../../controllers/attendanceController');
+const { updateExperience } = require('../../controllers/feedbackController');
 const verifyJWT = require('../../middleware/verifyJWT');
 
 
-router.post('/', verifyJWT, addCourse);
+router.patch('/updateExperience', verifyJWT, updateExperience);
 
 module.exports = router;

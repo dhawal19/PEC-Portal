@@ -1,9 +1,9 @@
 const express = require('express');
 const router = express.Router();
-const { addCourse } = require('../../controllers/attendanceController');
+const { getFeedback } = require('../../controllers/feedbackController');
 const verifyJWT = require('../../middleware/verifyJWT');
 
 
-router.post('/', verifyJWT, addCourse);
+router.get('/getFeedback', verifyJWT, getFeedback);
 
 module.exports = router;

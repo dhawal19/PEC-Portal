@@ -7,7 +7,7 @@ const courseSchema = new mongoose.Schema({
         lowercase: true
     },
     courseCode: {
-        type: Number,
+        type: String,
         required: true,
         unique: true,
     },
