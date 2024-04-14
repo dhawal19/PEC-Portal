@@ -46,7 +46,8 @@ app.use('/refresh', require('./routes/auth/refresh'));
 app.use('/logout', require('./routes/auth/logout'));
 app.use('/verify', require('./routes/auth/verify'));
 // User profile routes
-app.use('/delete', require('./routes/profile/deleteProfile'))
+app.use('/delete', require('./routes/profile/deleteProfile'));
+app.use('/updateProfile', require('./routes/profile/updateProfile'));
 // Attendance routes
 app.use("/attendance/addCourse", require('./routes/attendanceRoute/addCourse'));
 app.use("/attendance/getUserAttendance", require('./routes/attendanceRoute/getUserAttendance'));
@@ -56,6 +57,9 @@ app.use("/attendance/editAttendance", require('./routes/attendanceRoute/editAtte
 app.use("/feedback", require('./routes/feedback/addCourse'));
 app.use("/feedback", require('./routes/feedback/updateExperience'));
 app.use("/feedback", require('./routes/feedback/getFeedback'));
+// connection request routes
+app.use("/sendRequest", require('./routes/connection/sendRequest'));
+app.use("/acceptRequest", require('./routes/connection/acceptRequest'));
 
 
 app.get('/*', (req, res) => {

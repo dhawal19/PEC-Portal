@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import UserProfile from "../components/UserProfile";
 import { useSelector } from 'react-redux';
 import { selectUser } from '../features/auth/authSlice';
+import axios from 'axios';
 
 // const description = require('../../../api/langChain/description');
 
@@ -15,6 +16,30 @@ export default function CourseFeedbackPage({ courses }) {
         experience: ''
     });
     const [cards, setCards] = useState([]);
+    useEffect(() => {
+        async function fetchFeedback() {
+            try {
+                const response = await axios.get('http://localhost:3000/feedback/getFeedback', {}, {
+                    withCredentials: true,
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Access-Control-Allow-Origin': '*',
+                    },
+                });
+                if (response.status === 200) {
+                    const { feedback } = response.data;
+                    setCards(feedback);
+                } else {
+                    throw new Error('Failed to fetch data');
+                }
+            } catch (error) {
+                console.error('Error fetching feedback:', error);
+                // Handle error
+            }
+        }
+
+        fetchFeedback();
+    }, []);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
