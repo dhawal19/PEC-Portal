@@ -1,7 +1,6 @@
 // Import the Feedback model
 const User = require('../models/userModel');
 
-// Create Feedback Controller
 const deleteProfile = async (req, res) => {
     try {
         const userEmail = req.email;
@@ -15,6 +14,26 @@ const deleteProfile = async (req, res) => {
     }
 };
 
+const updateProfile = async (req, res) => {
+    try {
+        const userEmail = req.email;
+        const { email, bio, SID, branch, societies } = req.body;
 
+        const user = await User.findOne({ email: userEmail });
+        if (!user) return res.status(404).json({ message: 'User not found' });
 
-module.exports = { deleteProfile };
+        if (email) user.email = email;
+        if (bio) user.bio = bio;
+        if (SID) user.SID = SID;
+        if (branch) user.branch = branch;
+        if (societies) user.societies = societies;
+        await user.save();
+        console.log(user);
+        return res.status(200).json({ message: 'User profile updated successfully' });
+    } catch (error) {
+        console.error('Error updating profile:', error);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+};
+
+module.exports = { deleteProfile, updateProfile };

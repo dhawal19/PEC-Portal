@@ -47,7 +47,7 @@ const UserProfile = ({ user }) => {
             <p className="text-sm text-slate-300 mb-2 mt-3 p-2">{user.bio}</p>
             <div className="mb-4 p-2 mt-3">
                 <p className="text-sm font-semibold mb-1 text-slate-300">Number of Connections:</p>
-                <p className="text-sm text-slate-300">{user.connections}</p>
+                <p className="text-sm text-slate-300">{user.connections.length}</p>
             </div>
             <div className="mb-4 p-2">
                 <p className="text-sm font-semibold mb-1 text-slate-300">SID:</p>
