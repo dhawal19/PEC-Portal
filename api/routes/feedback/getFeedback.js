@@ -4,6 +4,6 @@ const { getFeedback } = require('../../controllers/feedbackController');
 const verifyJWT = require('../../middleware/verifyJWT');
 
 
-router.get('/getFeedback', verifyJWT, getFeedback);
+router.get('/', verifyJWT, getFeedback);
 
 module.exports = router;

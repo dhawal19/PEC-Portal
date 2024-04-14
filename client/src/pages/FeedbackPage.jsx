@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import UserProfile from "../components/UserProfile";
 import { useSelector } from 'react-redux';
-import { selectUser } from '../features/auth/authSlice';
+import { selectUser, selectToken } from '../features/auth/authSlice';
 import axios from 'axios';
 
 // const description = require('../../../api/langChain/description');
 
 export default function CourseFeedbackPage({ courses }) {
     const user = useSelector(selectUser);
+    const token = useSelector(selectToken);
     const [showForm, setShowForm] = useState(false);
     const [formData, setFormData] = useState({
         name: '',
@@ -19,11 +20,11 @@ export default function CourseFeedbackPage({ courses }) {
     useEffect(() => {
         async function fetchFeedback() {
             try {
-                const response = await axios.get('http://localhost:3000/feedback/getFeedback', {}, {
+                const response = await axios.get('http://localhost:3000/feedback/get-feedback', {
                     withCredentials: true,
                     headers: {
-                        'Content-Type': 'application/json',
                         'Access-Control-Allow-Origin': '*',
+                        'authorization': `Bearer ${token}`,
                     },
                 });
                 if (response.status === 200) {

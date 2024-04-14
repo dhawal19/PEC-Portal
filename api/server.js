@@ -54,9 +54,9 @@ app.use("/attendance/getUserAttendance", require('./routes/attendanceRoute/getUs
 app.use("/attendance/editAttendance", require('./routes/attendanceRoute/editAttendance'));
 // app.use("/messages/:id", require('./routes/messageRoute/messages'));
 // User feedback routes
-app.use("/feedback", require('./routes/feedback/addCourse'));
-app.use("/feedback", require('./routes/feedback/updateExperience'));
-app.use("/feedback", require('./routes/feedback/getFeedback'));
+app.use("/feedback/add-course", require('./routes/feedback/addCourse'));
+app.use("/feedback/update-exp", require('./routes/feedback/updateExperience'));
+app.use("/feedback/get-feedback", require('./routes/feedback/getFeedback'));
 // connection request routes
 app.use("/sendRequest", require('./routes/connection/sendRequest'));
 app.use("/acceptRequest", require('./routes/connection/acceptRequest'));
