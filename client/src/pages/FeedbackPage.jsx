@@ -53,15 +53,39 @@ export default function CourseFeedbackPage({ courses }) {
         const existingCourse = cards.find(card => card.courseCode === courseCode);
         if (existingCourse) {
             alert('Course already exists!! Please add experience to it.');
-        } else {
-            if (name && courseCode && credits) {
-                const newCard = { name, courseCode, credits, experience: [experience] };
-                setCards([...cards, newCard]);
-                setFormData({ name: '', courseCode: '', credits: '', experience: '' });
-                setShowForm(false);
-            } else {
-                alert('Please fill in all required fields.');
+        }
+        if (name && courseCode && credits) {
+            async function addCourse() {
+                try {
+                    const response = await axios.post('http://localhost:3000/feedback/add-course', {
+                        name: name,
+                        courseCode: courseCode,
+                        credits: credits,
+                        experience: [experience]
+                    }, {
+                        withCredentials: true,
+                        headers: {
+                            'Access-Control-Allow-Origin': '*',
+                            'authorization': `Bearer ${token}`,
+                        },
+                    });
+                    alert(response.status);
+                    if (response.status === 201) {
+                        const newCard = { name, courseCode, credits, experience: [experience] };
+                        setCards([...cards, newCard]);  // Add the new card to the state
+                        setFormData({ name: '', courseCode: '', credits: '', experience: '' });
+                        setShowForm(false);
+                        alert('Feedback added successfully!');
+                    } else {
+                        throw new Error('Failed to submit feedback');
+                    }
+                } catch (error) {
+                    console.error('Error submitting feedback:', error);
+                    alert('Failed to submit feedback: ' + error.message);
+                }
             }
+        } else {
+            alert('Please fill in all required fields.');
         }
     };
 
@@ -197,6 +221,7 @@ export default function CourseFeedbackPage({ courses }) {
                                 <button
                                     type='submit'
                                     className='bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500'
+                                    onSubmit={handleSubmit}
                                 >
                                     Submit
                                 </button>

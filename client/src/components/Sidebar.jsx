@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import { useState } from 'react';
-const Sidebar = ({users, onUserClick}) => {
-   
+const Sidebar = ({ users, onUserClick }) => {
+
     const [searchTerm, setSearchTerm] = useState('');
 
     // Filter users based on search term
@@ -10,8 +10,8 @@ const Sidebar = ({users, onUserClick}) => {
     );
 
     return (
-        <div className="bg-gray-200 h-full p-4">
-            <h2 className="text-lg font-semibold mb-4">Users</h2>
+        <div className="bg-gray-900 h-full p-4">
+            <h2 className="text-xl font-semibold mb-4 text-white text-center">Users</h2>
             <input
                 type="text"
                 value={searchTerm}
