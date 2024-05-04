@@ -5,7 +5,7 @@ import Chat from '../components/Chat';
 
 const MessagePage = () => {
     const [selectedUser, setSelectedUser] = useState(null); // State to track the selected user ID
-     // Variable to store the selected user object
+    // Variable to store the selected user object
     const users = [
         {
             _id: "65d7356ff8ff0749cf963602",
@@ -22,7 +22,7 @@ const MessagePage = () => {
     ]
 
     const handleUserClick = (user) => {
-     // Find the selected user object
+        // Find the selected user object
         // console.log(user);
         setSelectedUser(user);
     };
@@ -30,7 +30,7 @@ const MessagePage = () => {
     return (
         <div className="flex flex-col h-screen">
             {/* Navbar at the top */}
-            <Navbar title="My Chat App" />
+            <Navbar title="Messages" />
             {/* Main content area */}
             <div className="flex flex-1 overflow-hidden">
                 {/* Sidebar on the left */}

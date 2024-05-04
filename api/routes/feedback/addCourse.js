@@ -4,6 +4,6 @@ const { addCourse } = require('../../controllers/feedbackController');
 const verifyJWT = require('../../middleware/verifyJWT');
 
 
-router.post('/addCourse', verifyJWT, addCourse);
+router.post('/', verifyJWT, addCourse);
 
 module.exports = router;
