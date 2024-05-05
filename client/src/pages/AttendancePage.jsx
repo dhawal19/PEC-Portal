@@ -1,16 +1,43 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import UserProfile from "../components/UserProfile";
 import { useSelector } from 'react-redux';
-import { selectUser } from '../features/auth/authSlice';
+import { selectUser, selectToken } from '../features/auth/authSlice';
+import axios from 'axios';
 
 export default function AttendancePage({ courses }) {
     const user = useSelector(selectUser);
+    const token = useSelector(selectToken);
     const [showForm, setShowForm] = useState(false);
     const [formData, setFormData] = useState({
-        subject: '',
+        courseName: '',
         courseCode: ''
     });
     const [cards, setCards] = useState([]);
+
+    useEffect(() => {
+        async function fetchAttendance() {
+            try {
+                const response = await axios.get('http://localhost:3000/attendance/getUserAttendance', {
+                    withCredentials: true,
+                    headers: {
+                        'Access-Control-Allow-Origin': '*',
+                        'authorization': `Bearer ${token}`,
+                    },
+                });
+                if (response.status === 200) {
+                    const { attendance } = response.data;
+                    setCards(attendance);
+                } else {
+                    throw new Error('Failed to fetch data');
+                }
+                console.log(response);
+            } catch (error) {
+                console.error('Error fetching attendance:', error);
+            }
+        }
+
+        fetchAttendance();
+    }, [token]);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -19,26 +46,36 @@ export default function AttendancePage({ courses }) {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        const { subject, courseCode } = formData;
-        if (subject && courseCode) {
-            const newCard = { subject, courseCode, present: 0, total: 0 };
-            setCards([...cards, newCard]);
-            setFormData({ subject: '', courseCode: '' });
+        const { courseName, courseCode } = formData;
+        if (courseName && courseCode) {
+            const newCard = { courseName, courseCode, percentage: { present: 0, total: 0 } };
+            setCards(prevCards => {
+                if (Array.isArray(prevCards)) {
+                    return [...prevCards, newCard];
+                } else {
+                    return [newCard];
+                }
+            });
+            setFormData({ courseName: '', courseCode: '' });
             setShowForm(false);
         } else {
             alert('Please fill in all required fields.');
         }
     };
 
+
     const handleMarkAttendance = (index, present) => {
         const updatedCards = cards.map((card, i) => {
             if (i === index) {
-                return { ...card, present: present ? card.present + 1 : card.present, total: card.total + 1 };
+                const newPresent = present ? card.percentage.present + 1 : card.percentage.present;
+                const newTotal = card.percentage.total + 1;
+                return { ...card, percentage: { ...card.percentage, present: newPresent, total: newTotal } };
             }
             return card;
         });
         setCards(updatedCards);
     };
+
 
     return (
         <div className='flex h-screen'>
@@ -63,8 +100,8 @@ export default function AttendancePage({ courses }) {
                                 <div>
                                     <input
                                         type='text'
-                                        name='subject'
-                                        value={formData.subject}
+                                        name='courseName'
+                                        value={formData.courseName}
                                         onChange={handleChange}
                                         placeholder='Subject Name'
                                         className='w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500 text-black'
@@ -90,11 +127,16 @@ export default function AttendancePage({ courses }) {
                         </div>
                     </div>
                     <div className="mt-4 flex flex-wrap mx-6">
-                        {cards.map((card, index) => (
+                        {cards && cards.map((card, index) => (
                             <div key={index} className='bg-white text-gray-800 p-4 rounded-md shadow-md mb-4 mr-4 w-80'>
-                                <h2 className='text-lg font-semibold mb-2'>{card.subject}</h2>
+                                <h2 className='text-lg font-semibold mb-2'>{card.courseName}</h2>
                                 <p className='text-gray-600 mb-2'>Course Code: {card.courseCode}</p>
-                                <p className='text-gray-700'>Attendance: {card.present} / {card.total}</p>
+                                {card.percentage && (
+                                    <div>
+                                        <p className='text-gray-700'>Attendance: {card.percentage.present} / {card.percentage.total}</p>
+                                        <p className='text-gray-700'>Percentage: {card.percentage.total !== 0 ? ((card.percentage.present / card.percentage.total) * 100).toFixed(2) : 0}%</p>
+                                    </div>
+                                )}
                                 <div className='mt-2 flex'>
                                     <button
                                         className='bg-green-500 text-white py-2 px-4 rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 flex-grow'
@@ -111,7 +153,9 @@ export default function AttendancePage({ courses }) {
                                 </div>
                             </div>
                         ))}
+
                     </div>
+
                 </div>
             </div>
         </div>
