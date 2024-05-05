@@ -20,22 +20,21 @@ export default function AttendancePage({ courses }) {
                 const response = await axios.get('http://localhost:3000/attendance/getUserAttendance', {
                     withCredentials: true,
                     headers: {
-                        'Access-Control-Allow-Origin': '*',
                         'authorization': `Bearer ${token}`,
                     },
                 });
                 if (response.status === 200) {
-                    const { attendance } = response.data;
+                    const  attendance  = response.data;
                     setCards(attendance);
-                } else {
-                    throw new Error('Failed to fetch data');
+                } 
+                if(response.status === 404) {
+                    alert('No courses found');
                 }
                 console.log(response);
             } catch (error) {
                 console.error('Error fetching attendance:', error);
             }
         }
-
         fetchAttendance();
     }, [token]);
 
@@ -44,11 +43,38 @@ export default function AttendancePage({ courses }) {
         setFormData({ ...formData, [name]: value });
     };
 
-    const handleSubmit = (e) => {
+    const addCourse = (newCard) => async () => {
+        try {
+            const response = await axios.post('http://localhost:3000/attendance/addCourse', {
+                courseName: newCard.courseName,
+                courseCode: newCard.courseCode,
+                present: newCard.percentage.present,
+                total: newCard.percentage.total
+            }, {
+                withCredentials: true,
+                headers: {
+                    'Access-Control-Allow-Origin': '*',
+                    'authorization': `Bearer ${token}`,
+                },
+            });
+            if (response.status !== 200) {
+                alert('Failed to add course');
+                return;
+            }
+        } catch (error) {
+            console.error('Error adding course:', error);
+        }
+    };
+
+    const handleSubmit = async (e) => {
         e.preventDefault();
         const { courseName, courseCode } = formData;
         if (courseName && courseCode) {
             const newCard = { courseName, courseCode, percentage: { present: 0, total: 0 } };
+
+            // Send the new card to the server
+            await addCourse(newCard)();
+            // Update the state with the new card
             setCards(prevCards => {
                 if (Array.isArray(prevCards)) {
                     return [...prevCards, newCard];
@@ -63,8 +89,27 @@ export default function AttendancePage({ courses }) {
         }
     };
 
+    const editAttendance = (card) => async () => {
+        try {
+            const response = await axios.patch(`http://localhost:3000/attendance/editAttendance/data?courseCode=${card.courseCode}`, {
+                present: card.percentage.present,
+                total: card.percentage.total,
+            }, {
+                withCredentials: true,
+                headers: {
+                    'authorization': `Bearer ${token}`,
+                },
+            });
+            if (response.status !== 200) {
+                alert('Failed to edit attendance');
+                return;
+            }
+        } catch (error) {
+            console.error('Error editing attendance:', error);
+        }
+    };
 
-    const handleMarkAttendance = (index, present) => {
+    const handleMarkAttendance = async (index, present) => {
         const updatedCards = cards.map((card, i) => {
             if (i === index) {
                 const newPresent = present ? card.percentage.present + 1 : card.percentage.present;
@@ -73,6 +118,9 @@ export default function AttendancePage({ courses }) {
             }
             return card;
         });
+
+        // Send the updated card to the server
+        await editAttendance(updatedCards[index])();
         setCards(updatedCards);
     };
 

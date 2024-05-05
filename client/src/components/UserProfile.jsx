@@ -26,6 +26,7 @@ const UserProfile = ({ user }) => {
                 throw new Error(errorMessage || 'Failed to logout');
             }
             dispatch(setUser({}));
+            dispatch(setToken(null));
             naviagate('/');
         }
         catch (error) {

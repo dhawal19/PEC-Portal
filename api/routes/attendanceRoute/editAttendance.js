@@ -4,6 +4,6 @@ const { editAttendance } = require('../../controllers/attendanceController');
 const verifyJWT = require('../../middleware/verifyJWT');
 
 
-router.patch('/', verifyJWT, editAttendance);
+router.patch('/data', verifyJWT, editAttendance);
 
 module.exports = router;
