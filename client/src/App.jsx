@@ -21,10 +21,10 @@ const App = () => {
         <Routes>
           <Route path='/' element={<LandingPage />} />
           <Route path='/home' element={verify ? <HomePage /> : <LoginForm />} />
-          <Route path='/attendance' element={<AttendancePage />} />
-          <Route path='/feedback' element={<FeedbackPage />} />
-          <Route path='/messages' element={<MessagePage />} />
-          <Route path='/connect' element={<ConnectPage />} />
+          <Route path='/attendance' element={verify ? <AttendancePage /> : <LoginForm />} />
+          <Route path='/feedback' element={verify ? <FeedbackPage /> : <LoginForm />} />
+          <Route path='/messages' element={verify ? <MessagePage /> : <LoginForm />} />
+          <Route path='/connect' element={verify ? <ConnectPage /> : <LoginForm />} />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </BrowserRouter>

@@ -26,7 +26,17 @@ const updateProfile = async (req, res) => {
         if (bio) user.bio = bio;
         if (SID) user.SID = SID;
         if (branch) user.branch = branch;
-        if (societies) user.societies = societies;
+        if (societies) {
+            // Ensure societies is an array
+            if (!Array.isArray(societies)) {
+                return res.status(400).json({ message: 'Societies must be an array' });
+            }
+            // Clear existing societies array and push new values
+            user.societies = [];
+            societies.forEach(society => {
+                user.societies.push(society);
+            });
+        }
         await user.save();
         console.log(user);
         return res.status(200).json({ message: 'User profile updated successfully' });

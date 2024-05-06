@@ -27,7 +27,7 @@ export default function CourseFeedbackPage({ courses }) {
                     },
                 });
                 if (response.status === 200) {
-                    const {feedback}  = response.data;
+                    const { feedback } = response.data;
                     setCards(feedback);
                     console.log(feedback);
                 } else {
@@ -55,33 +55,33 @@ export default function CourseFeedbackPage({ courses }) {
             alert('Course already exists!! Please add experience to it.');
         }
         if (name && courseCode && credits) {
-                try {
-                    const response = await axios.post('http://localhost:3000/feedback/add-course', {
-                        name: name,
-                        courseCode: courseCode,
-                        credits: credits,
-                        experience: [experience]
-                    }, {
-                        withCredentials: true,
-                        headers: {
-                            'authorization': `Bearer ${token}`,
-                        },
-                    });
-                    alert(response.status);
-                    if (response.status === 201) {
-                        const newCard = { name, courseCode, credits, experience: [experience] };
-                        setCards([...cards, newCard]);  // Add the new card to the state
-                        setFormData({ name: '', courseCode: '', credits: '', experience: '' });
-                        setShowForm(false);
-                        alert('Feedback added successfully!');
-                    } else {
-                        throw new Error('Failed to submit feedback');
-                    }
-                } catch (error) {
-                    console.error('Error submitting feedback:', error);
-                    alert('Failed to submit feedback: ' + error.message);
+            try {
+                const response = await axios.post('http://localhost:3000/feedback/add-course', {
+                    name: name,
+                    courseCode: courseCode,
+                    credits: credits,
+                    experience: [experience]
+                }, {
+                    withCredentials: true,
+                    headers: {
+                        'authorization': `Bearer ${token}`,
+                    },
+                });
+                alert(response.status);
+                if (response.status === 201) {
+                    const newCard = { name, courseCode, credits, experience: [experience] };
+                    setCards([...cards, newCard]);  // Add the new card to the state
+                    setFormData({ name: '', courseCode: '', credits: '', experience: '' });
+                    setShowForm(false);
+                    alert('Feedback added successfully!');
+                } else {
+                    throw new Error('Failed to submit feedback');
                 }
-            
+            } catch (error) {
+                console.error('Error submitting feedback:', error);
+                alert('Failed to submit feedback: ' + error.message);
+            }
+
         } else {
             alert('Please fill in all required fields.');
         }
@@ -121,8 +121,6 @@ export default function CourseFeedbackPage({ courses }) {
         }
     };
 
-
-
     const handleViewMore = (index) => {
         const updatedCards = cards.map((card, i) => {
             if (cards[i].courseCode === index) {
@@ -141,22 +139,9 @@ export default function CourseFeedbackPage({ courses }) {
         });
         setCards(updatedCards);
     };
-    const handleViewDescription = async (description) => {
-        try {
-            // Make API call to fetch description using description parameter
-            // Example:
-            // const response = await fetch(`API_ENDPOINT/${description}`);
-            // const data = await response.json();
-            // Handle data as needed, such as displaying it in a modal
-            console.log('Description:', description);
-        } catch (error) {
-            console.error('Error fetching description:', error);
-            // Handle error
-        }
-    };
 
     return (
-        <div className='flex h-screen bg-slate-950 text-white'>
+        <div className='flex h-screen bg-gradient-to-tl from-zinc-900 to-gray-900 text-white'>
             <div className='w-1/5 h-full'>
                 <UserProfile user={user} />
             </div>
@@ -165,49 +150,51 @@ export default function CourseFeedbackPage({ courses }) {
                     <div className='mb-8'>
                         <h1 className='text-4xl font-bold text-center'>Course Feedback</h1>
                     </div>
-                    {cards && cards.map((card) => (
-                        <div
-                            key={card.courseCode}  // Using courseCode as key
-                            className='bg-white text-gray-800 p-4 rounded-md shadow-md mb-4 relative'
-                        >
-                            <h2 className='text-lg font-semibold mb-2'>{card.name}</h2>
-                            <p className='text-gray-600 mb-2'>Course Code: {card.courseCode}</p>
-                            <p className='text-gray-600 mb-2'>Credits: {card.credits}</p>
-                            <p className='text-gray-700'>Experience:</p>
-                            <ul className='mb-4'>
-                                {card.experience.slice(0, card.showAllExperience ? undefined : 2).map((exp, expIndex) => {
-                                    console.log('Experience:', exp); // Add console log here
-                                    return (
-                                        <li key={expIndex} className='ml-4'>{exp}</li>
-                                    );
-                                })}
-                                {card.showAllExperience &&
-                                <button className='text-blue-500 hover:text-blue-700 focus:outline-none pt-2'
-                                    onClick={() => handleViewLess(card.courseCode)}>
-                                    View less
-                                    </button>}
-                            </ul>
-                            {/* <ul className='mb-4'>
-                                {card.experience.map((exp, expIndex) => (
-                                    <li key={expIndex} className='ml-4'>{exp}</li>
-                                ))}
-                            </ul> */}
-                            {!card.showAllExperience && card.experience.length > 2 && (
-                                <button
-                                    className='text-blue-500 hover:text-blue-700 focus:outline-none'
-                                    onClick={() => handleViewMore(card.courseCode)}
-                                >
-                                    View More
-                                </button>
-                            )}
-                            <button
-                                className='bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 absolute top-4 right-4'
-                                onClick={() => handleAddExperience(card.courseCode)} // Changed to use courseCode
+                    <div className="mt-8 flex flex-wrap mx-4 justify-center space-x-8">
+                        {cards && cards.map((card, index) => (
+                            <div
+                                key={card.courseCode}
+                                className={`bg-slate-300 text-gray-800 p-6 rounded-md shadow-md w-72 flex flex-col justify-between mb-5`}
+                                style={{ height: '24rem' }}
                             >
-                                Add
-                            </button>
-                        </div>
-                    ))}
+                                <div>
+                                    <h2 className='text-xl font-bold mb-4 text-center'>{card.name.toUpperCase()}</h2>
+                                    <p className='text-black mb-4 font-semibold'>Course Code: {card.courseCode}</p>
+                                    <p className='text-black mb-4 font-semibold'>Credits: {card.credits}</p>
+                                    <p className='text-black mb-4 font-semibold'>Experience:</p>
+                                    <ul className='mb-4 text-black'>
+                                        {card.experience.slice(0, card.showAllExperience ? undefined : 2).map((exp, expIndex) => (
+                                            <li key={expIndex} className='ml-4'>
+                                                {`${expIndex + 1}. ${exp.toLowerCase().split('. ').map(sentence => sentence.charAt(0).toUpperCase() + sentence.slice(1)).join('. ')}`}
+                                            </li>
+                                        ))}
+                                        {card.showAllExperience &&
+                                            <button className='text-blue-500 hover:text-blue-700 focus:outline-none pt-2'
+                                                onClick={() => handleViewLess(card.courseCode)}>
+                                                View less
+                                            </button>}
+                                    </ul>
+
+                                    {!card.showAllExperience && card.experience.length > 2 && (
+                                        <button
+                                            className='text-blue-500 hover:text-blue-700 focus:outline-none mb-4'
+                                            onClick={() => handleViewMore(card.courseCode)}
+                                        >
+                                            View More
+                                        </button>
+                                    )}
+                                </div>
+                                <button
+                                    className='bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500'
+                                    onClick={() => handleAddExperience(card.courseCode)}
+                                >
+                                    Add
+                                </button>
+                            </div>
+                        ))}
+                    </div>
+
+                    {/* form for adding course */}
                     <div className={`absolute top-0 left-0 w-full h-full flex justify-center items-center bg-black bg-opacity-50 ${showForm ? 'z-10' : 'hidden'}`}>
                         <div className='bg-white p-8 rounded-lg shadow-lg'>
                             <h2 className='text-xl font-semibold mb-4 text-black'>Add New Feedback</h2>
