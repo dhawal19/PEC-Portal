@@ -25,7 +25,7 @@ const addCourse = async (req, res) => {
             }
         })
         await course.save();
-        console.log('course added successfully');
+        // console.log('course added successfully');
         res.status(200).json({ message: 'Course added successfully' });
     }
     catch (error) {
@@ -43,7 +43,7 @@ const getUserAttendance = async (req, res) => {
         if (!user) return res.status(404).json({ message: "User not found" })
 
         let courses = await Attendance.find({ user: user._id });
-        if(courses.length === 0) {
+        if (courses.length === 0) {
             return res.status(404).json({ message: "No courses found" });
         }
         if (!courses) return res.status(404).json({ message: "Courses not found" });
@@ -60,7 +60,7 @@ const editAttendance = async (req, res) => {
         // console.log(req.body);
         const { present, total } = req.body;
         // console.log(present);
-        console.log(req.query);
+        // console.log(req.query);
         const { courseCode } = req.query;
         const userEmail = req.email;
         // console.log(userEmail);
