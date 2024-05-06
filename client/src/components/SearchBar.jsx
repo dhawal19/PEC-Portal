@@ -16,6 +16,7 @@ const SearchBar = ({ users, onSearch }) => {
             return interestMatch && yearMatch;
         });
 
+        // Call the onSearch callback with the filtered users
         onSearch(filteredUsers);
     };
 

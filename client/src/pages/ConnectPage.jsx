@@ -30,15 +30,13 @@ const ConnectPage = () => {
         }
     ];
     return (
-        <div className="flex">
-            {/* User Profile Sidebar */}
+        <div className="flex h-full">
             <div className="w-1/5">
                 <UserProfile user={user} />
             </div>
-
             {/* Right Content */}
-            <div className="flex flex-col w-4/5">
-                <h1 className="text-2xl font-bold mt-4 mb-2">Connect with Colleagues</h1>
+            <div className="flex flex-col w-4/5 bg-gradient-to-tl from-zinc-900 to-gray-900 h-full">
+                <h1 className="text-4xl font-bold mt-6 mb-2 text-center font-anta text-white">Connect with Colleagues</h1>
                 {/* Search Bar */}
                 <SearchBar />
                 {/* User Cards */}
