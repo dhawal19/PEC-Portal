@@ -29,6 +29,7 @@ const RegisterForm = () => {
       onSuccess: () => {
         queryClient.invalidateQueries('register');
         dispatch(setType('login'));
+        alert('Registration successful! Please login to continue');
       },
       onError: (error) => {
         console.log(error);
@@ -39,8 +40,6 @@ const RegisterForm = () => {
   const handleRegister = async (e) => {
     e.preventDefault();
     registerMutation.mutate({ name, email, password, SID, branch, bio });
-
-
   };
 
   return (

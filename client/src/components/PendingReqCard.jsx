@@ -9,15 +9,36 @@ const PendingReqCard = ({ userName, userSID, userBio, userInterests }) => {
             const response = await axios.patch(`http://localhost:3000/connect/acceptRequest`, { SID: userSID }, {
                 withCredentials: true,
                 headers: {
-                    'Access-Control-Allow-Origin': '*',
-                    'authorization': `Bearer ${token}`,
+                    authorization: `Bearer ${token}`,
                 },
             });
             if (response.status === 200) {
                 console.log('Request Accepted:', response.data);
+                // reload the page
+                window.location.reload();
             }
         } catch (error) {
-            console.error('Error accepting request:', error.response ? error.response.data : error.message);
+            console.error('Error accepting request:',  error.message);
+        }
+    };
+
+    const handleDecline = async () => {
+        try {
+            const response = await axios.delete(`http://localhost:3000/connect/rejectRequest`, {
+                withCredentials: true,
+                headers: {
+                    authorization: `Bearer ${token}`,
+                },
+                data: { SID: userSID},
+            },
+            );
+            if (response.status === 200) {
+                console.log('Request Declined:', response.data);
+                // reload the page
+                window.location.reload();
+            }
+        } catch (error) {
+            console.error('Error declining request:', error.response ? error.response.data : error.message);
         }
     };
 
@@ -40,7 +61,9 @@ const PendingReqCard = ({ userName, userSID, userBio, userInterests }) => {
                 ))}
             </div>
             <div className="px-6 py-4">
-                <button className="bg-red-300 hover:bg-red-500 text-white font-bold py-2 px-4 rounded mr-3">
+                <button className="bg-red-300 hover:bg-red-500 text-white font-bold py-2 px-4 rounded mr-3"
+                        onClick={handleDecline}
+                >
                     Decline
                 </button>
                 <button
