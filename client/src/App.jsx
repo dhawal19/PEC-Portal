@@ -7,6 +7,7 @@ import LandingPage from './pages/LandingPage';
 import FeedbackPage from './pages/FeedbackPage';
 import MessagePage from './pages/MessagePage';
 import ConnectPage from './pages/ConnectPage';
+import FriendsPage from './pages/FriendsPage';
 import { useVerify } from './hooks/useVerify';
 import AttendancePage from './pages/AttendancePage';
 
@@ -25,6 +26,7 @@ const App = () => {
           <Route path='/feedback' element={verify ? <FeedbackPage /> : <LoginForm />} />
           <Route path='/messages' element={verify ? <MessagePage /> : <LoginForm />} />
           <Route path='/connect' element={verify ? <ConnectPage /> : <LoginForm />} />
+          <Route path='/friends' element={<FriendsPage />} />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </BrowserRouter>

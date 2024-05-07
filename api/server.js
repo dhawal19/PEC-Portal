@@ -67,7 +67,7 @@ app.use("/connect/getPendingRequests", require('./routes/connection/getPendingRe
 app.use("/connect/sendRequest", require('./routes/connection/sendRequest'));
 app.use("/connect/acceptRequest", require('./routes/connection/acceptRequest'));
 app.use("/connect/rejectRequest", require('./routes/connection/rejectRequest'));
-
+app.use("/connect/getFriends", require('./routes/connection/getFriends'));
 
 app.get('/*', (req, res) => {
     res.sendFile(__dirname + '/public/404.html');
