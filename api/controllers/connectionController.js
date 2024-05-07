@@ -1,4 +1,5 @@
 // const User = require('../models/userModel');
+const { request } = require('http');
 const connectionRequest = require('../models/connectionRequestModel');
 const User = require("../models/userModel")
 
@@ -10,13 +11,13 @@ const sendRequest = async (req, res) => {
         const sender = await User.findOne({ email: userEmail });
         const receiver = await User.findOne({ SID: SID });
 
-        if (sender.SID == SID) return res.status(403).json({ message: "User cannot send request to self" })
-
         if (!sender) return res.status(404).json({ message: "Sender not found" })
         if (!receiver) return res.status(404).json({ message: "Receiver not found" })
 
+        if (sender.SID == SID) return res.status(403).json({ message: "User cannot send request to self" })
+
         // else create a new course
-        request = new connectionRequest({
+        const request = new connectionRequest({
             sentBy: sender,
             receivedBy: receiver
         })
@@ -60,4 +61,53 @@ const acceptRequest = async (req, res) => {
     }
 }
 
-module.exports = { sendRequest, acceptRequest };
+const getUsers = async (req, res) => {
+    try {
+        const userEmail = req.email;
+        const user = await User.findOne({ email: userEmail });
+
+        // Find users who are not in the connected users list of the logged-in user
+        const usersNotConnected = await User.find({
+            email: { $ne: userEmail }, // Exclude the logged-in user
+            _id: { $nin: user.connections } // Exclude users who are already connected
+        });
+
+        res.status(200).json(usersNotConnected);
+    } catch (error) {
+        console.error("Error in getUsers controller:", error.message);
+        res.status(500).json({ error: "Internal Server Error" });
+    }
+}
+
+const getPendingRequests = async (req, res) => {
+    try {
+        const userEmail = req.email;
+        const user = await User.find({ email: userEmail });
+        // Find all connection requests where receivedBy matches the logged-in user's ID
+        const pendingRequests = await connectionRequest.find({ receivedBy: user });
+
+        const requests = await Promise.all(pendingRequests.map(async request => {
+            try {
+                const sentByUser = await User.findById(request.sentBy);
+                if (!sentByUser) {
+                    throw new Error(`User with ID ${request.sentBy} not found`);
+                }
+                return {
+                    name: sentByUser.name,
+                    SID: sentByUser.SID,
+                    branch: sentByUser.branch,
+                    societies: sentByUser.societies
+                };
+            } catch (error) {
+                console.error('Error fetching user information:', error);
+                throw new Error('Failed to fetch user information');
+            }
+        }));
+        res.status(200).json(requests);
+    } catch (error) {
+        console.error('Error fetching pending connection requests:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+};
+
+module.exports = { sendRequest, acceptRequest, getUsers, getPendingRequests };
