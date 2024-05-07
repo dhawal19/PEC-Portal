@@ -85,7 +85,7 @@ const UserProfile = ({ user }) => {
                 const errorMessage = `An error has occurred: ${response.status}`;
                 throw new Error(errorMessage || 'Failed to delete profile');
             }
-            
+
             dispatch(setUser({}));
             dispatch(setToken(null));
             naviagate('/');
@@ -108,7 +108,7 @@ const UserProfile = ({ user }) => {
                 <h2 className="text-lg font-semibold text-slate-300 ">{user.name}</h2>
                 <p className="text-sm  text-slate-300 mt-2">{user.email}</p>
             </div>
-            <p className="text-sm text-slate-300 px-2 mt-1"><strong>User Bio :</strong> {user.bio}</p>
+            <p className="text-sm text-slate-300 px-2 mt-1"><p className='font-semibold inline-block'>User Bio :</p> {user.bio}</p>
             <div className="mb-1 p-2 mt-3">
                 <p className="text-sm font-semibold text-slate-300">Number of Connections: {user.connections ? user.connections.length : 0}</p>
             </div>

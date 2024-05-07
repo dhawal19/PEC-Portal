@@ -5,7 +5,7 @@ const User = require("../models/userModel")
 
 const sendRequest = async (req, res) => {
     try {
-        const {SID}  = req.body;
+        const { SID } = req.body;
         const userEmail = req.email;
         // console.log(userEmail);
         const sender = await User.findOne({ email: userEmail });
@@ -15,7 +15,7 @@ const sendRequest = async (req, res) => {
         if (!receiver) return res.status(404).json({ message: "Receiver not found" })
 
         if (sender.SID == SID) return res.status(403).json({ message: "User cannot send request to self" })
-        
+
         // check if request already exists
         const requestExists = await connectionRequest.findOne({ sentBy: sender, receivedBy: receiver });
         if (requestExists) return res.status(403).json({ message: "Request already exists" });
@@ -136,4 +136,30 @@ const getPendingRequests = async (req, res) => {
     }
 };
 
-module.exports = { sendRequest, acceptRequest, getUsers, getPendingRequests, rejectRequest };
+const getFriends = async (req, res) => {
+    try {
+        const userEmail = req.email;
+        const user = await User.findOne({ email: userEmail });
+        if (!user) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+
+        const connectedUsers = await User.find({ _id: { $in: user.connections } });
+
+        const friends = connectedUsers.map(user => ({
+            name: user.name,
+            SID: user.SID,
+            branch: user.branch,
+            societies: user.societies,
+            bio: user.bio
+        }));
+
+        res.status(200).json(friends);
+    } catch (error) {
+        console.error('Error fetching connections:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+};
+
+
+module.exports = { sendRequest, acceptRequest, getUsers, getPendingRequests, rejectRequest, getFriends };
