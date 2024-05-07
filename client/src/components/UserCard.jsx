@@ -7,10 +7,9 @@ const UserCard = ({ userName, userSID, userBio, userInterests }) => {
     const token = useSelector(selectToken);
     const handleConnect = async () => {
         try {
-            const response = await axios.post('http://localhost:3000/connect/sendRequest', { userSID }, {
+            const response = await axios.post('http://localhost:3000/connect/sendRequest', { SID:userSID }, {
                 withCredentials: true,
                 headers: {
-                    'Access-Control-Allow-Origin': '*',
                     Authorization: `Bearer ${token}`,
                 },
             });
@@ -20,7 +19,15 @@ const UserCard = ({ userName, userSID, userBio, userInterests }) => {
             }
         } catch (error) {
             console.error('Error sending connection request:', error);
-            alert("Failed to send connection request.");
+            if(error.response.status === 403) {
+                alert("Request already sent.");
+            }
+            else if(error.response.status === 404) {
+                alert("User not found.");
+            }
+            else {
+                alert("Failed to send connection request.");
+            }
         }
     };
     return (

@@ -5,7 +5,7 @@ const User = require("../models/userModel")
 
 const sendRequest = async (req, res) => {
     try {
-        const { SID } = req.body;
+        const {SID}  = req.body;
         const userEmail = req.email;
         // console.log(userEmail);
         const sender = await User.findOne({ email: userEmail });
@@ -15,6 +15,10 @@ const sendRequest = async (req, res) => {
         if (!receiver) return res.status(404).json({ message: "Receiver not found" })
 
         if (sender.SID == SID) return res.status(403).json({ message: "User cannot send request to self" })
+        
+        // check if request already exists
+        const requestExists = await connectionRequest.findOne({ sentBy: sender, receivedBy: receiver });
+        if (requestExists) return res.status(403).json({ message: "Request already exists" });
 
         // else create a new course
         const request = new connectionRequest({
@@ -57,6 +61,28 @@ const acceptRequest = async (req, res) => {
     }
     catch (error) {
         console.log("error in accept connection request controller", error.message);
+        res.status(500).json({ error: "Internal Server Error" });
+    }
+}
+
+const rejectRequest = async (req, res) => {
+    try {
+        const { SID } = req.body;
+        const userEmail = req.email;
+
+        const sender = await User.findOne({ SID: SID });
+        const receiver = await User.findOne({ email: userEmail });
+
+        if (receiver.SID == SID) return res.status(403).json({ message: "Cannot decline a request you sent" });
+
+        const request = await connectionRequest.findOne({ sentBy: sender, receivedBy: receiver });
+        if (!request) return res.status(404).json({ message: 'Request not found' });
+
+        await connectionRequest.findOneAndDelete({ sentBy: sender, receivedBy: receiver });
+        res.status(200).json({ message: 'Request declined successfully' });
+    }
+    catch (error) {
+        console.log("error in decline connection request controller", error.message);
         res.status(500).json({ error: "Internal Server Error" });
     }
 }
@@ -110,4 +136,4 @@ const getPendingRequests = async (req, res) => {
     }
 };
 
-module.exports = { sendRequest, acceptRequest, getUsers, getPendingRequests };
+module.exports = { sendRequest, acceptRequest, getUsers, getPendingRequests, rejectRequest };

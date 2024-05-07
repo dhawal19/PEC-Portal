@@ -21,6 +21,12 @@ const MessagePage = () => {
         }
     ]
 
+    useEffect(() => {
+        // Fetch users from the server
+        
+    }, []);
+
+
     const handleUserClick = (user) => {
         // Find the selected user object
         // console.log(user);

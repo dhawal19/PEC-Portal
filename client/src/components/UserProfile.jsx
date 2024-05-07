@@ -85,10 +85,11 @@ const UserProfile = ({ user }) => {
                 const errorMessage = `An error has occurred: ${response.status}`;
                 throw new Error(errorMessage || 'Failed to delete profile');
             }
-            console.log('Profile deleted successfully');
+            
             dispatch(setUser({}));
             dispatch(setToken(null));
             naviagate('/');
+            alert("Profile deleted successfully");
         } catch (error) {
             console.error('Failed to delete profile:', error);
         }
@@ -120,7 +121,7 @@ const UserProfile = ({ user }) => {
             <div className="mb-4 p-2">
                 <p className="text-sm font-semibold mb-1 text-slate-300">Societies and Interests:</p>
                 <div className="flex flex-wrap">
-                    {user.societies.map((society, index) => (
+                    {user.societies && user.societies.map((society, index) => (
                         <span key={index} className="bg-slate-400 text-sm font-semibold text-black px-2 py-1 rounded-full mr-2 mb-2 inline-block">
                             {society}
                         </span>

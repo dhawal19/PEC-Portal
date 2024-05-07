@@ -45,23 +45,28 @@ app.use('/login', require('./routes/auth/login'));
 app.use('/refresh', require('./routes/auth/refresh'));
 app.use('/logout', require('./routes/auth/logout'));
 app.use('/verify', require('./routes/auth/verify'));
+
 // User profile routes
 app.use('/delete', require('./routes/profile/deleteProfile'));
 app.use('/updateProfile', require('./routes/profile/updateProfile'));
+
 // Attendance routes
 app.use("/attendance/addCourse", require('./routes/attendanceRoute/addCourse'));
 app.use("/attendance/getUserAttendance", require('./routes/attendanceRoute/getUserAttendance'));
 app.use("/attendance/editAttendance", require('./routes/attendanceRoute/editAttendance'));
 // app.use("/messages/:id", require('./routes/messageRoute/messages'));
+
 // User feedback routes
 app.use("/feedback/add-course", require('./routes/feedback/addCourse'));
 app.use("/feedback/update-exp", require('./routes/feedback/updateExperience'));
 app.use("/feedback/get-feedback", require('./routes/feedback/getFeedback'));
-// connection request routes
+
+// Connection request routes
 app.use("/connect/getUsers", require('./routes/connection/getUsers'));
 app.use("/connect/getPendingRequests", require('./routes/connection/getPendingRequests'));
 app.use("/connect/sendRequest", require('./routes/connection/sendRequest'));
 app.use("/connect/acceptRequest", require('./routes/connection/acceptRequest'));
+app.use("/connect/rejectRequest", require('./routes/connection/rejectRequest'));
 
 
 app.get('/*', (req, res) => {
