@@ -2,27 +2,25 @@ import React from 'react';
 import axios from 'axios';
 import { useSelector } from 'react-redux';
 import { selectUser, selectToken } from '../features/auth/authSlice';
-
-const UserCard = ({ userName, userSID, userBio, userInterests }) => {
+const PendingReqCard = ({ userName, userSID, userBio, userInterests }) => {
     const token = useSelector(selectToken);
-    const handleConnect = async () => {
+    const handleAccept = async () => {
         try {
-            const response = await axios.post('http://localhost:3000/connect/sendRequest', { userSID }, {
+            const response = await axios.patch(`http://localhost:3000/connect/acceptRequest`, { SID: userSID }, {
                 withCredentials: true,
                 headers: {
                     'Access-Control-Allow-Origin': '*',
-                    Authorization: `Bearer ${token}`,
+                    'authorization': `Bearer ${token}`,
                 },
             });
-            console.log(response.data);
-            if (response.statusCode === 200) {
-                alert("Connection request sent!");
+            if (response.status === 200) {
+                console.log('Request Accepted:', response.data);
             }
         } catch (error) {
-            console.error('Error sending connection request:', error);
-            alert("Failed to send connection request.");
+            console.error('Error accepting request:', error.response ? error.response.data : error.message);
         }
     };
+
     return (
         <div className="max-w-sm rounded overflow-hidden shadow-lg bg-slate-200">
             {/* <img className="w-full" src={profileImage} alt="User Profile" /> */}
@@ -42,12 +40,18 @@ const UserCard = ({ userName, userSID, userBio, userInterests }) => {
                 ))}
             </div>
             <div className="px-6 py-4">
-                <button onClick={handleConnect} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                    Connect
+                <button className="bg-red-300 hover:bg-red-500 text-white font-bold py-2 px-4 rounded mr-3">
+                    Decline
+                </button>
+                <button
+                    className="bg-green-300 hover:bg-green-500 text-white font-bold py-2 px-4 rounded"
+                    onClick={handleAccept}
+                >
+                    Accept
                 </button>
             </div>
         </div>
     );
 };
 
-export default UserCard;
+export default PendingReqCard;

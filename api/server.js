@@ -58,8 +58,10 @@ app.use("/feedback/add-course", require('./routes/feedback/addCourse'));
 app.use("/feedback/update-exp", require('./routes/feedback/updateExperience'));
 app.use("/feedback/get-feedback", require('./routes/feedback/getFeedback'));
 // connection request routes
-app.use("/sendRequest", require('./routes/connection/sendRequest'));
-app.use("/acceptRequest", require('./routes/connection/acceptRequest'));
+app.use("/connect/getUsers", require('./routes/connection/getUsers'));
+app.use("/connect/getPendingRequests", require('./routes/connection/getPendingRequests'));
+app.use("/connect/sendRequest", require('./routes/connection/sendRequest'));
+app.use("/connect/acceptRequest", require('./routes/connection/acceptRequest'));
 
 
 app.get('/*', (req, res) => {
