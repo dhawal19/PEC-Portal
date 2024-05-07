@@ -38,7 +38,7 @@ const Chat = ({ selectedUser }) => {
       });
     setSocket(newSocket);
     setUserId(user._id);
-    console.log(userId);
+    // console.log(userId);
     if (selectedUser) setReceiverId(selectedUser._id);
     newSocket.on('receive_message', (data) => {
       setReceiveQueue((prevQueue) => [...prevQueue, data.message]);

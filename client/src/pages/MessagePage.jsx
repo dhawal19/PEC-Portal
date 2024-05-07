@@ -1,30 +1,37 @@
-import React, { useEffect, useState } from 'react';
+import {useRef, useEffect, useState } from 'react';
 import Navbar from '../components/Navbar';
 import Sidebar from '../components/Sidebar';
 import Chat from '../components/Chat';
-
+import axios from 'axios';
+import { selectToken } from '../features/auth/authSlice';
+import { useSelector } from 'react-redux';
 const MessagePage = () => {
     const [selectedUser, setSelectedUser] = useState(null); // State to track the selected user ID
+    const token = useSelector(selectToken); 
     // Variable to store the selected user object
-    const users = [
-        {
-            _id: "65d7356ff8ff0749cf963602",
-            name: "abc"
-        },
-        {
-            _id: "660e7ac6094c0ab5e10e5ec4",
-            name: "Chirag Garg"
-        },
-        {
-            _id: "65d39690603e9fa6832b104b",
-            name: "Dhawal Arora"
-        }
-    ]
+    let users = useRef([]);
 
     useEffect(() => {
         // Fetch users from the server
-        
-    }, []);
+        const fetchUsers = async () => {
+            try {
+                const response = await axios.get('http://localhost:3000/connect/getFriends', {
+                    withCredentials: true,
+                    headers: {
+                        authorization: `Bearer ${token}`
+                    }
+                });
+
+                if (response.status === 200) {
+                    users.current = response.data;
+                }
+                } catch (error) {
+                    console.error("Error fetching users:", error.message);
+                }
+
+        }
+        fetchUsers();
+    }, [token]);
 
 
     const handleUserClick = (user) => {
@@ -41,7 +48,7 @@ const MessagePage = () => {
             <div className="flex flex-1 overflow-hidden">
                 {/* Sidebar on the left */}
                 <div className="w-1/5">
-                    <Sidebar users={users} onUserClick={handleUserClick} />
+                    <Sidebar users={users.current} onUserClick={handleUserClick} />
                 </div>
                 {/* Chat on the right */}
                 <div className="w-4/5 flex flex-col">
