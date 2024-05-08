@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import { useState } from 'react';
-const Sidebar = ({ users, onUserClick }) => {
+const Sidebar = ({ users, onUserClick, loading }) => {
 
     const [searchTerm, setSearchTerm] = useState('');
 
@@ -19,7 +19,8 @@ const Sidebar = ({ users, onUserClick }) => {
                 placeholder="Search users..."
                 className="w-full p-2 mb-4 border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-blue-500"
             />
-            <div>
+            {loading ? <div className='text-slate-100 '>Loading...</div> :
+                <div>
                 {filteredUsers.map((user, index) => (
                     <div
                         key={index}
@@ -29,7 +30,7 @@ const Sidebar = ({ users, onUserClick }) => {
                         {user.name}
                     </div>
                 ))}
-            </div>
+            </div>}
         </div>
     );
 };

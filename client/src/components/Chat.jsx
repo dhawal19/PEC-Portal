@@ -128,7 +128,7 @@ const Chat = ({ selectedUser }) => {
           </button>
         </span>
       </form>
-      {isTyping && <div className="text-sm text-gray-500">{selectedUser.name} is typing...</div>}
+      {isTyping && <div className="text-sm text-gray-500">{selectedUser ? selectedUser.name : "No user selected"} is typing...</div>}
     </div>
   );
 };

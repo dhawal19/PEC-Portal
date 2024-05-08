@@ -7,6 +7,7 @@ import { selectToken } from '../features/auth/authSlice';
 import { useSelector } from 'react-redux';
 const MessagePage = () => {
     const [selectedUser, setSelectedUser] = useState(null); // State to track the selected user ID
+    const [loading, setLoading] = useState(true); // State to track loading status
     const token = useSelector(selectToken); 
     // Variable to store the selected user object
     let users = useRef([]);
@@ -28,6 +29,9 @@ const MessagePage = () => {
                 } catch (error) {
                     console.error("Error fetching users:", error.message);
                 }
+                finally {
+                    setLoading(false);
+                }
 
         }
         fetchUsers();
@@ -48,7 +52,7 @@ const MessagePage = () => {
             <div className="flex flex-1 overflow-hidden">
                 {/* Sidebar on the left */}
                 <div className="w-1/5">
-                    <Sidebar users={users.current} onUserClick={handleUserClick} />
+                    <Sidebar users={users.current} onUserClick={handleUserClick} loading={loading} />
                 </div>
                 {/* Chat on the right */}
                 <div className="w-4/5 flex flex-col">
